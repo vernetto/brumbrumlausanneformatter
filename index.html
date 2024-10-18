@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="it">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Car Ride Sharing Formatter</title>
+    <title>Condivisione Viaggi in Auto</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -58,66 +58,66 @@
 <body>
 
 <!-- Logo Section -->
-<img src="https://example.com/logo.png" alt="Car Ride Sharing Logo" class="logo">
+<img src="brumbrumsuisse.jpg" alt="Logo Condivisione Viaggi" class="logo">
 
-<h1>Car Ride Sharing Information</h1>
+<h1>Informazioni sulla Condivisione Viaggi in Auto</h1>
 
 <!-- Radio Button for Offer/Request -->
 <div class="radio-group">
-    <label><input type="radio" name="rideType" value="Offer" checked> Offer</label>
-    <label><input type="radio" name="rideType" value="Request"> Request</label>
+    <label><input type="radio" name="rideType" value="Offerta" checked> Offerta</label>
+    <label><input type="radio" name="rideType" value="Richiesta"> Richiesta</label>
 </div>
 
 <!-- From City -->
 <div class="form-group">
-    <label for="fromCity">From (City A):</label>
+    <label for="fromCity">Da (Città A):</label>
     <select id="fromCitySelect" onchange="toggleNewCityInput('from')">
-        <option value="">Select a city</option>
+        <option value="">Seleziona una città</option>
         <option value="Torino">Torino</option>
         <option value="Ivrea">Ivrea</option>
         <option value="Aosta">Aosta</option>
-        <option value="Lausanne">Lausanne</option>
+        <option value="Losanna">Losanna</option>
         <option value="Martigny">Martigny</option>
-        <option value="Bern">Bern</option>
-        <option value="Zürich">Zürich</option>
-        <option value="other">Other (Enter new city)</option>
+        <option value="Berna">Berna</option>
+        <option value="Zürigo">Zürigo</option>
+        <option value="other">Altro (Inserisci nuova città)</option>
     </select>
-    <input type="text" id="fromCityText" placeholder="Enter new city" style="display: none; margin-top: 10px;">
+    <input type="text" id="fromCityText" placeholder="Inserisci nuova città" style="display: none; margin-top: 10px;">
 </div>
 
 <!-- To City -->
 <div class="form-group">
-    <label for="toCity">To (City B):</label>
+    <label for="toCity">A (Città B):</label>
     <select id="toCitySelect" onchange="toggleNewCityInput('to')">
-        <option value="">Select a city</option>
+        <option value="">Seleziona una città</option>
         <option value="Torino">Torino</option>
         <option value="Ivrea">Ivrea</option>
         <option value="Aosta">Aosta</option>
-        <option value="Lausanne">Lausanne</option>
+        <option value="Losanna">Losanna</option>
         <option value="Martigny">Martigny</option>
-        <option value="Bern">Bern</option>
-        <option value="Zürich">Zürich</option>
-        <option value="other">Other (Enter new city)</option>
+        <option value="Berna">Berna</option>
+        <option value="Zürigo">Zürigo</option>
+        <option value="other">Altro (Inserisci nuova città)</option>
     </select>
-    <input type="text" id="toCityText" placeholder="Enter new city" style="display: none; margin-top: 10px;">
+    <input type="text" id="toCityText" placeholder="Inserisci nuova città" style="display: none; margin-top: 10px;">
 </div>
 
 <!-- Date and Time -->
 <div class="form-group">
-    <label for="dateTime">Date and Time:</label>
+    <label for="dateTime">Data e Ora:</label>
     <input type="datetime-local" id="dateTime">
 </div>
 
 <!-- Additional Comments -->
 <div class="form-group">
-    <label for="comments">Additional Comments:</label>
-    <textarea id="comments" rows="3" placeholder="Enter any additional details or comments"></textarea>
+    <label for="comments">Commenti aggiuntivi:</label>
+    <textarea id="comments" rows="3" placeholder="Inserisci eventuali dettagli o commenti"></textarea>
 </div>
 
 <!-- Format Button -->
-<button id="formatBtn" onclick="formatRideInfo()">Format Ride Info</button>
+<button id="formatBtn" onclick="formatRideInfo()">Formatta Informazioni Viaggio</button>
 
-<h2>Formatted Ride Information:</h2>
+<h2>Informazioni Viaggio Formattate:</h2>
 <div id="output" class="output"></div>
 
 <script>
@@ -141,18 +141,18 @@
         const comments = document.getElementById('comments').value;
 
         if (fromCity && toCity && dateTime) {
-            const icon = rideType === 'Offer' ? '✅' : '❓'; // Different icons for Offer/Request
-            const formattedText = `${icon} *Car Ride Sharing ${rideType}*\n\n` +
-                `*From*: ${fromCity}\n` +
-                `*To*: ${toCity}\n` +
-                `*Date and Time*: ${new Date(dateTime).toLocaleString()}\n\n` +
-                `${comments ? '_Additional Comments:_\n' + comments : ''}`;
+            const icon = rideType === 'Offerta' ? '✅' : '❓'; // Different icons for Offer/Request
+            const formattedText = `${icon} *Condivisione Viaggio in Auto ${rideType}*\n\n` +
+                `*Da*: ${fromCity}\n` +
+                `*A*: ${toCity}\n` +
+                `*Data e Ora*: ${new Date(dateTime).toLocaleString()}\n\n` +
+                `${comments ? '_Commenti aggiuntivi:_\n' + comments : ''}`;
 
             document.getElementById('output').textContent = formattedText;
             copyToClipboard(formattedText);
-            alert('Formatted information copied to clipboard!');
+            alert('Informazioni formattate copiate negli appunti!');
         } else {
-            alert('Please fill in all required fields.');
+            alert('Per favore, compila tutti i campi richiesti.');
         }
     }
 
