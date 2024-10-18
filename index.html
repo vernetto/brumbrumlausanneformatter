@@ -18,10 +18,18 @@
         label {
             font-weight: bold;
         }
-        input, textarea {
+        select, input, textarea {
             width: 100%;
             padding: 10px;
             margin-top: 5px;
+        }
+        .radio-group {
+            display: inline-flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        .radio-group label {
+            margin-right: 5px;
         }
         button {
             padding: 10px 20px;
@@ -40,46 +48,101 @@
             background-color: #f9f9f9;
             white-space: pre-wrap;
         }
+        .logo {
+            display: block;
+            margin: 0 auto;
+            width: 150px;
+        }
     </style>
 </head>
 <body>
 
+<!-- Logo Section -->
+<img src="https://example.com/logo.png" alt="Car Ride Sharing Logo" class="logo">
+
 <h1>Car Ride Sharing Information</h1>
 
+<!-- Radio Button for Offer/Request -->
+<div class="radio-group">
+    <label><input type="radio" name="rideType" value="Offer" checked> Offer</label>
+    <label><input type="radio" name="rideType" value="Request"> Request</label>
+</div>
+
+<!-- From City -->
 <div class="form-group">
     <label for="fromCity">From (City A):</label>
-    <input type="text" id="fromCity" placeholder="Enter the starting city">
+    <select id="fromCitySelect" onchange="toggleNewCityInput('from')">
+        <option value="">Select a city</option>
+        <option value="Torino">Torino</option>
+        <option value="Ivrea">Ivrea</option>
+        <option value="Aosta">Aosta</option>
+        <option value="Lausanne">Lausanne</option>
+        <option value="Martigny">Martigny</option>
+        <option value="Bern">Bern</option>
+        <option value="Zürich">Zürich</option>
+        <option value="other">Other (Enter new city)</option>
+    </select>
+    <input type="text" id="fromCityText" placeholder="Enter new city" style="display: none; margin-top: 10px;">
 </div>
 
+<!-- To City -->
 <div class="form-group">
     <label for="toCity">To (City B):</label>
-    <input type="text" id="toCity" placeholder="Enter the destination city">
+    <select id="toCitySelect" onchange="toggleNewCityInput('to')">
+        <option value="">Select a city</option>
+        <option value="Torino">Torino</option>
+        <option value="Ivrea">Ivrea</option>
+        <option value="Aosta">Aosta</option>
+        <option value="Lausanne">Lausanne</option>
+        <option value="Martigny">Martigny</option>
+        <option value="Bern">Bern</option>
+        <option value="Zürich">Zürich</option>
+        <option value="other">Other (Enter new city)</option>
+    </select>
+    <input type="text" id="toCityText" placeholder="Enter new city" style="display: none; margin-top: 10px;">
 </div>
 
+<!-- Date and Time -->
 <div class="form-group">
     <label for="dateTime">Date and Time:</label>
     <input type="datetime-local" id="dateTime">
 </div>
 
+<!-- Additional Comments -->
 <div class="form-group">
     <label for="comments">Additional Comments:</label>
     <textarea id="comments" rows="3" placeholder="Enter any additional details or comments"></textarea>
 </div>
 
+<!-- Format Button -->
 <button id="formatBtn" onclick="formatRideInfo()">Format Ride Info</button>
 
 <h2>Formatted Ride Information:</h2>
 <div id="output" class="output"></div>
 
 <script>
+    // Toggle between dropdown or text input for cities
+    function toggleNewCityInput(type) {
+        const selectElement = document.getElementById(type + 'CitySelect');
+        const textElement = document.getElementById(type + 'CityText');
+
+        if (selectElement.value === 'other') {
+            textElement.style.display = 'block';
+        } else {
+            textElement.style.display = 'none';
+        }
+    }
+
     function formatRideInfo() {
-        const fromCity = document.getElementById('fromCity').value;
-        const toCity = document.getElementById('toCity').value;
+        const rideType = document.querySelector('input[name="rideType"]:checked').value;
+        const fromCity = document.getElementById('fromCitySelect').value === 'other' ? document.getElementById('fromCityText').value : document.getElementById('fromCitySelect').value;
+        const toCity = document.getElementById('toCitySelect').value === 'other' ? document.getElementById('toCityText').value : document.getElementById('toCitySelect').value;
         const dateTime = document.getElementById('dateTime').value;
         const comments = document.getElementById('comments').value;
 
         if (fromCity && toCity && dateTime) {
-            const formattedText = `🚗 *Car Ride Sharing Information*\n\n` +
+            const icon = rideType === 'Offer' ? '✅' : '❓'; // Different icons for Offer/Request
+            const formattedText = `${icon} *Car Ride Sharing ${rideType}*\n\n` +
                 `*From*: ${fromCity}\n` +
                 `*To*: ${toCity}\n` +
                 `*Date and Time*: ${new Date(dateTime).toLocaleString()}\n\n` +
