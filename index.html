@@ -121,6 +121,8 @@
 <div id="output" class="output"></div>
 
 <script>
+    const giorniSettimana = ['Domenica', 'Lunedì', 'Martedì', 'Mercoledì', 'Giovedì', 'Venerdì', 'Sabato'];
+
     // Toggle between dropdown or text input for cities
     function toggleNewCityInput(type) {
         const selectElement = document.getElementById(type + 'CitySelect');
@@ -142,10 +144,12 @@
 
         if (fromCity && toCity && dateTime) {
             const icon = rideType === 'Offerta' ? '✅' : '❓'; // Different icons for Offer/Request
+            const dateObj = new Date(dateTime);
+            const dayOfWeek = giorniSettimana[dateObj.getDay()]; // Get the day of the week in Italian
             const formattedText = `${icon} *Condivisione Viaggio in Auto ${rideType}*\n\n` +
                 `*Da*: ${fromCity}\n` +
                 `*A*: ${toCity}\n` +
-                `*Data e Ora*: ${new Date(dateTime).toLocaleString()}\n\n` +
+                `*Data e Ora*: ${dayOfWeek}, ${dateObj.toLocaleString()}\n\n` +
                 `${comments ? '_Commenti aggiuntivi:_\n' + comments : ''}`;
 
             document.getElementById('output').textContent = formattedText;
