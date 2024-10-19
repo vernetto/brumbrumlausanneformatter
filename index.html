@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Condivisione Viaggi in Auto</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -53,6 +52,12 @@
             margin: 0 auto;
             width: 150px;
         }
+        .message {
+            color: blue;
+            margin-top: 10px;
+            font-weight: bold;
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -73,13 +78,6 @@
     <label for="fromCity">Da (Città A):</label>
     <select id="fromCitySelect" onchange="toggleNewCityInput('from')">
         <option value="">Seleziona una città</option>
-        <option value="Torino">Torino</option>
-        <option value="Ivrea">Ivrea</option>
-        <option value="Aosta">Aosta</option>
-        <option value="Losanna">Losanna</option>
-        <option value="Martigny">Martigny</option>
-        <option value="Berna">Berna</option>
-        <option value="Zürigo">Zürigo</option>
         <option value="other">Altro (Inserisci nuova città)</option>
     </select>
     <input type="text" id="fromCityText" placeholder="Inserisci nuova città" style="display: none; margin-top: 10px;">
@@ -90,13 +88,6 @@
     <label for="toCity">A (Città B):</label>
     <select id="toCitySelect" onchange="toggleNewCityInput('to')">
         <option value="">Seleziona una città</option>
-        <option value="Torino">Torino</option>
-        <option value="Ivrea">Ivrea</option>
-        <option value="Aosta">Aosta</option>
-        <option value="Losanna">Losanna</option>
-        <option value="Martigny">Martigny</option>
-        <option value="Berna">Berna</option>
-        <option value="Zürigo">Zürigo</option>
         <option value="other">Altro (Inserisci nuova città)</option>
     </select>
     <input type="text" id="toCityText" placeholder="Inserisci nuova città" style="display: none; margin-top: 10px;">
@@ -120,8 +111,34 @@
 <h2>Informazioni Viaggio Formattate:</h2>
 <div id="output" class="output"></div>
 
+<!-- Message displayed after copying to clipboard -->
+<p id="copyMessage" class="message">Informazioni formattate copiate negli appunti!</p>
+
 <script>
     const giorniSettimana = ['Domenica', 'Lunedì', 'Martedì', 'Mercoledì', 'Giovedì', 'Venerdì', 'Sabato'];
+
+    // Fetch city list from external JSON file
+    fetch('cities.json')
+        .then(response => response.json())
+        .then(data => populateCityList(data.cities));
+
+    // Populate the city list into the select elements
+    function populateCityList(cities) {
+        const fromCitySelect = document.getElementById('fromCitySelect');
+        const toCitySelect = document.getElementById('toCitySelect');
+
+        cities.forEach(city => {
+            const optionFrom = document.createElement('option');
+            optionFrom.value = city;
+            optionFrom.text = city;
+            fromCitySelect.insertBefore(optionFrom, fromCitySelect.lastChild);
+
+            const optionTo = document.createElement('option');
+            optionTo.value = city;
+            optionTo.text = city;
+            toCitySelect.insertBefore(optionTo, toCitySelect.lastChild);
+        });
+    }
 
     // Toggle between dropdown or text input for cities
     function toggleNewCityInput(type) {
@@ -146,15 +163,19 @@
             const icon = rideType === 'Offerta' ? '✅' : '❓'; // Different icons for Offer/Request
             const dateObj = new Date(dateTime);
             const dayOfWeek = giorniSettimana[dateObj.getDay()]; // Get the day of the week in Italian
+            const formattedDate = ('0' + dateObj.getDate()).slice(-2) + '/' + ('0' + (dateObj.getMonth() + 1)).slice(-2) + '/' + dateObj.getFullYear();
             const formattedText = `${icon} *Condivisione Viaggio in Auto ${rideType}*\n\n` +
                 `*Da*: ${fromCity}\n` +
                 `*A*: ${toCity}\n` +
-                `*Data e Ora*: ${dayOfWeek}, ${dateObj.toLocaleString()}\n\n` +
+                `*Data e Ora*: ${dayOfWeek}, ${formattedDate}, ${dateObj.toLocaleTimeString()}\n\n` +
                 `${comments ? '_Commenti aggiuntivi:_\n' + comments : ''}`;
 
             document.getElementById('output').textContent = formattedText;
             copyToClipboard(formattedText);
-            alert('Informazioni formattate copiate negli appunti!');
+
+            // Display the copy message
+            const copyMessageElement = document.getElementById('copyMessage');
+            copyMessageElement.style.display = 'block';
         } else {
             alert('Per favore, compila tutti i campi richiesti.');
         }
